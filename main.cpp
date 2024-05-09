@@ -15,7 +15,6 @@ notes
 ○ Heap Sort
 ○ Radix Sort (particularly useful for large numerical datasets or strings)
 ○ Shell Sort
-copy(begin(numbers), end(numbers), begin(numbers2))
 */
 
 
@@ -23,7 +22,7 @@ copy(begin(numbers), end(numbers), begin(numbers2))
 const int range = 1000;
 
 
-//-------------------------------- GENERATION-AND-PRINTING --------------------------------//
+//------------------------------- GENERATION-AND-PRINTING ---------------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //this function generates random numbers in the specified range
@@ -40,7 +39,7 @@ void print(int(&numbers)[range]) {
     }
 }
 
-//-------------------------------------- BUBBLE-SORT --------------------------------------//
+//------------------------------------- BUBBLE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //first version of bubble sort function
@@ -64,6 +63,7 @@ void bubblesort(int(&numbers)[range]) {
 //------------------------------------ SELECTION-SORT -------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
+//first selection sort algorithm implementation
 
 void selectionsort(int(&numbers)[range]) {
     for(int i=0 ; i<(range-1) ; i++) {
@@ -79,6 +79,23 @@ void selectionsort(int(&numbers)[range]) {
     }
 }
 
+//------------------------------------ INSERTION-SORT -------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//insertion sort is functiolan
+
+void insertionsort(int(&numbers)[range]) {
+    for(int i=1 ; i<range ; i++) {
+        int index = i;
+        while(numbers[i] < numbers[i-1]) {
+            int temp = numbers[i];
+            numbers[i] = numbers[i-1];
+            numbers[i-1] = temp;
+            if(i>0) i--;
+        }
+        i = index;
+    }
+}
 
 //-----------------------------------------------------------------------------------------//
 //---------------------------------------- M A I N ----------------------------------------//
@@ -95,7 +112,9 @@ int main() {
     }
     
     //bubblesort(numbers);
-    selectionsort(numbers);
+    //selectionsort(numbers);
+    //print(numbers);
+    insertionsort(numbers);
     print(numbers);
 
 }
