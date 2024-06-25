@@ -3,6 +3,8 @@
 #include <string>
 #include <array>
 #include <algorithm>
+#include <memory>
+#include <chrono>
 using namespace std;
 
 /*
@@ -20,9 +22,10 @@ notes
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
 
 //this determines the length of our list of numbers
-const int range = 100;
+const int range = 1000;
+int latency = 0;
 
-//------------------------------- GENERATION-AND-PRINTING ---------------------------------//
+//--------------------------- GENERATION-PRINTING-CALCULATION -----------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //this function generates random numbers in the specified range
@@ -36,9 +39,30 @@ int randomnum() {
 //this is a simple function to print our numbers in order
 void print(int(&numbers)[range]) {    
     for(int i=0 ; i<range ; i++) {
-        cout << numbers[i] << endl;
+        cout << numbers[i] << " ";
     }
 }
+
+//this class will calculate the latency of a certain code block
+class Timer {
+	public:
+		Timer() {
+			starttime = std::chrono::high_resolution_clock::now();
+		}
+		~Timer() {
+			stop();
+		}
+		void stop() {
+			auto stoptime = std::chrono::high_resolution_clock::now();
+			auto start = std::chrono::time_point_cast<std::chrono::microseconds>(starttime).time_since_epoch().count();
+			auto stop = std::chrono::time_point_cast<std::chrono::microseconds>(stoptime).time_since_epoch().count();
+			auto duration = stop - start;
+			//cout << "latency of the selected sorting function was: " << duration << " microseconds";
+            latency = duration;
+		}
+	private:
+		std::chrono::time_point<std::chrono::high_resolution_clock> starttime;
+};
 
 //------------------------------------- BUBBLE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
@@ -158,20 +182,25 @@ void shellSort(int(&numbers)[]) {
 int main() {
 
     int numbers[range];
-
     for(int i=0 ; i<range ; i++) {
         numbers[i] = randomnum();
     }
-    
-    //bubblesort(numbers);
-    //selectionsort(numbers);
-    //insertionsort(numbers);
-    //print(numbers);
-    //heapSort(numbers);
-    shellSort(numbers);
-    print(numbers);
-    
-    return 0;
 
+    cout << "original array: [ ";
+    print(numbers);
+    cout <<"]"<<endl;
+    {
+        Timer timer;
+        //bubblesort(numbers);
+        //selectionsort(numbers);
+        //insertionsort(numbers);
+        //heapSort(numbers);
+        //shellSort(numbers);      
+    }
+    cout << "sorted array: [ ";
+    print(numbers);
+    cout <<"]"<<endl;
+    cout << "the latency of this sorting function was: "<<latency<<" microseconds";
+    return 0;
 }
 
