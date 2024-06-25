@@ -7,25 +7,26 @@ using namespace std;
 
 /*
 notes
-○ Bubble Sort 
-○ Selection Sort
-○ Insertion Sort
-○ Merge Sort
-○ Quick Sort
-○ Heap Sort
-○ Radix Sort (particularly useful for large numerical datasets or strings)
+○ Bubble Sort   (functional)
+○ Selection Sort    (functional)  
+○ Insertion Sort    (functional)
+○ Merge Sort 
+○ Quick Sort 
+○ Heap Sort        (functional)  
+○ Radix Sort(particularly useful for large numerical datasets or strings)   
 ○ Shell Sort
 */
 
+//------------------------------------- ARRAY-SIZE ----------------------------------------//
 
 //this determines the length of our list of numbers
-const int range = 1000;
-
+const int range = 100;
 
 //------------------------------- GENERATION-AND-PRINTING ---------------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //this function generates random numbers in the specified range
+
 int randomnum() {
     random_device rand;
     uniform_int_distribution<int> num(0,range);
@@ -44,7 +45,7 @@ void print(int(&numbers)[range]) {
 
 //first version of bubble sort function
 
-void bubblesort(int(&numbers)[range]) {
+void bubblesort(int(&numbers)[]) {
 
     while(1) {
         int counter = 1;
@@ -65,7 +66,7 @@ void bubblesort(int(&numbers)[range]) {
 
 //first selection sort algorithm implementation
 
-void selectionsort(int(&numbers)[range]) {
+void selectionsort(int(&numbers)[]) {
     for(int i=0 ; i<(range-1) ; i++) {
         int min = i;
         for(int j=i ; j<(range) ; j++) {
@@ -84,7 +85,7 @@ void selectionsort(int(&numbers)[range]) {
 
 //insertion sort is functiolan
 
-void insertionsort(int(&numbers)[range]) {
+void insertionsort(int(&numbers)[]) {
     for(int i=1 ; i<range ; i++) {
         int index = i;
         while(numbers[i] < numbers[i-1]) {
@@ -94,6 +95,37 @@ void insertionsort(int(&numbers)[range]) {
             if(i>0) i--;
         }
         i = index;
+    }
+}
+
+//-------------------------------------- MERGE-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//--------------------------------------- HEAP-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+void heap(int numbers[], int n, int i) {
+    int root = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+    if (l < n && numbers[l] > numbers[root]){
+        root = l;
+    }
+    if (r < n && numbers[r] > numbers[root]){
+        root = r;
+    }
+    if (root != i) {
+        swap(numbers[i], numbers[root]);
+        heap(numbers, n, root);
+    }
+}
+void heapSort(int(&numbers)[]) {
+    for (int i = range / 2 - 1 ; i >= 0; i--) {
+        heap(numbers, range, i);
+    }
+    for (int i = range - 1; i > 0; i--) {
+        swap(numbers[0], numbers[i]);
+        heap(numbers, i, 0);
     }
 }
 
@@ -113,9 +145,12 @@ int main() {
     
     //bubblesort(numbers);
     //selectionsort(numbers);
+    //insertionsort(numbers);
     //print(numbers);
-    insertionsort(numbers);
+    heapSort(numbers);
     print(numbers);
+    
+    return 0;
 
 }
 
