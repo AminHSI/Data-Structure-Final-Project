@@ -3,29 +3,33 @@
 #include <string>
 #include <array>
 #include <algorithm>
+#include <memory>
+#include <chrono>
 using namespace std;
 
 /*
 notes
-○ Bubble Sort 
-○ Selection Sort
-○ Insertion Sort
-○ Merge Sort
-○ Quick Sort
-○ Heap Sort
-○ Radix Sort (particularly useful for large numerical datasets or strings)
-○ Shell Sort
+○ Bubble Sort       (functional)
+○ Selection Sort    (functional)  
+○ Insertion Sort    (functional)
+○ Merge Sort 
+○ Quick Sort 
+○ Heap Sort         (functional)  
+○ Radix Sort 
+○ Shell Sort        (functional)
 */
 
+//------------------------------------- ARRAY-SIZE ----------------------------------------//
 
 //this determines the length of our list of numbers
 const int range = 1000;
+int latency = 0;
 
-
-//------------------------------- GENERATION-AND-PRINTING ---------------------------------//
+//--------------------------- GENERATION-PRINTING-CALCULATION -----------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //this function generates random numbers in the specified range
+
 int randomnum() {
     random_device rand;
     uniform_int_distribution<int> num(0,range);
@@ -35,16 +39,37 @@ int randomnum() {
 //this is a simple function to print our numbers in order
 void print(int(&numbers)[range]) {    
     for(int i=0 ; i<range ; i++) {
-        cout << numbers[i] << endl;
+        cout << numbers[i] << " ";
     }
 }
+
+//this class will calculate the latency of a certain code block
+class Timer {
+	public:
+		Timer() {
+			starttime = std::chrono::high_resolution_clock::now();
+		}
+		~Timer() {
+			stop();
+		}
+		void stop() {
+			auto stoptime = std::chrono::high_resolution_clock::now();
+			auto start = std::chrono::time_point_cast<std::chrono::microseconds>(starttime).time_since_epoch().count();
+			auto stop = std::chrono::time_point_cast<std::chrono::microseconds>(stoptime).time_since_epoch().count();
+			auto duration = stop - start;
+			//cout << "latency of the selected sorting function was: " << duration << " microseconds";
+            latency = duration;
+		}
+	private:
+		std::chrono::time_point<std::chrono::high_resolution_clock> starttime;
+};
 
 //------------------------------------- BUBBLE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
 //first version of bubble sort function
 
-void bubblesort(int(&numbers)[range]) {
+void bubblesort(int(&numbers)[]) {
 
     while(1) {
         int counter = 1;
@@ -65,7 +90,7 @@ void bubblesort(int(&numbers)[range]) {
 
 //first selection sort algorithm implementation
 
-void selectionsort(int(&numbers)[range]) {
+void selectionsort(int(&numbers)[]) {
     for(int i=0 ; i<(range-1) ; i++) {
         int min = i;
         for(int j=i ; j<(range) ; j++) {
@@ -84,7 +109,7 @@ void selectionsort(int(&numbers)[range]) {
 
 //insertion sort is functiolan
 
-void insertionsort(int(&numbers)[range]) {
+void insertionsort(int(&numbers)[]) {
     for(int i=1 ; i<range ; i++) {
         int index = i;
         while(numbers[i] < numbers[i-1]) {
@@ -97,6 +122,57 @@ void insertionsort(int(&numbers)[range]) {
     }
 }
 
+//-------------------------------------- MERGE-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//--------------------------------------- HEAP-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//first version of heapsort
+
+void heap(int numbers[], int n, int i) {
+    int root = i;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
+    if (l < n && numbers[l] > numbers[root]){
+        root = l;
+    }
+    if (r < n && numbers[r] > numbers[root]){
+        root = r;
+    }
+    if (root != i) {
+        swap(numbers[i], numbers[root]);
+        heap(numbers, n, root);
+    }
+}
+void heapSort(int(&numbers)[]) {
+    for (int i = range / 2 - 1 ; i >= 0; i--) {
+        heap(numbers, range, i);
+    }
+    for (int i = range - 1; i > 0; i--) {
+        swap(numbers[0], numbers[i]);
+        heap(numbers, i, 0);
+    }
+}
+
+//-------------------------------------- SHELL-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//shell sort function done
+
+void shellSort(int(&numbers)[]) {
+	for (int n = range/2; n > 0; n /= 2) {
+		for (int i = n; i < range; i += 1) {
+			int temp = numbers[i];
+			int j;		 
+			for (j = i; j >= n && numbers[j - n] > temp; j -= n) {
+				numbers[j] = numbers[j - n];
+            }
+			numbers[j] = temp;
+		}
+	}
+}
+
 //-----------------------------------------------------------------------------------------//
 //---------------------------------------- M A I N ----------------------------------------//
 //-----------------------------------------------------------------------------------------//
@@ -106,16 +182,25 @@ void insertionsort(int(&numbers)[range]) {
 int main() {
 
     int numbers[range];
-
     for(int i=0 ; i<range ; i++) {
         numbers[i] = randomnum();
     }
-    
-    //bubblesort(numbers);
-    //selectionsort(numbers);
-    //print(numbers);
-    insertionsort(numbers);
-    print(numbers);
 
+    cout << "original array: [ ";
+    print(numbers);
+    cout <<"]"<<endl;
+    {
+        Timer timer;
+        //bubblesort(numbers);
+        //selectionsort(numbers);
+        //insertionsort(numbers);
+        //heapSort(numbers);
+        //shellSort(numbers);      
+    }
+    cout << "sorted array: [ ";
+    print(numbers);
+    cout <<"]"<<endl;
+    cout << "the latency of this sorting function was: "<<latency<<" microseconds";
+    return 0;
 }
 
