@@ -7,14 +7,14 @@ using namespace std;
 
 /*
 notes
-○ Bubble Sort   (functional)
+○ Bubble Sort       (functional)
 ○ Selection Sort    (functional)  
 ○ Insertion Sort    (functional)
 ○ Merge Sort 
 ○ Quick Sort 
-○ Heap Sort        (functional)  
-○ Radix Sort(particularly useful for large numerical datasets or strings)   
-○ Shell Sort
+○ Heap Sort         (functional)  
+○ Radix Sort 
+○ Shell Sort        (functional)
 */
 
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
@@ -104,6 +104,8 @@ void insertionsort(int(&numbers)[]) {
 //--------------------------------------- HEAP-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
+//first version of heapsort
+
 void heap(int numbers[], int n, int i) {
     int root = i;
     int l = 2 * i + 1;
@@ -129,6 +131,24 @@ void heapSort(int(&numbers)[]) {
     }
 }
 
+//-------------------------------------- SHELL-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//shell sort function done
+
+void shellSort(int(&numbers)[]) {
+	for (int n = range/2; n > 0; n /= 2) {
+		for (int i = n; i < range; i += 1) {
+			int temp = numbers[i];
+			int j;		 
+			for (j = i; j >= n && numbers[j - n] > temp; j -= n) {
+				numbers[j] = numbers[j - n];
+            }
+			numbers[j] = temp;
+		}
+	}
+}
+
 //-----------------------------------------------------------------------------------------//
 //---------------------------------------- M A I N ----------------------------------------//
 //-----------------------------------------------------------------------------------------//
@@ -147,7 +167,8 @@ int main() {
     //selectionsort(numbers);
     //insertionsort(numbers);
     //print(numbers);
-    heapSort(numbers);
+    //heapSort(numbers);
+    shellSort(numbers);
     print(numbers);
     
     return 0;
