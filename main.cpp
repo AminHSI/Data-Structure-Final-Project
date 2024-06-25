@@ -12,8 +12,8 @@ notes
 ○ Bubble Sort       (functional)
 ○ Selection Sort    (functional)  
 ○ Insertion Sort    (functional)
-○ Merge Sort 
-○ Quick Sort 
+○ Merge Sort        (functional)
+○ Quick Sort        (functional) 
 ○ Heap Sort         (functional)  
 ○ Radix Sort 
 ○ Shell Sort        (functional)
@@ -125,6 +125,77 @@ void insertionsort(int(&numbers)[]) {
 //-------------------------------------- MERGE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
+void Merge(int left[], int leftSize, int right[], int rightSize, int numbers[], int totalSize) {
+    int l = 0, r = 0, i = 0;
+
+    while (l < leftSize && r < rightSize) {
+        if (left[l] < right[r]) {
+            numbers[i++] = left[l++];
+        } else {
+            numbers[i++] = right[r++];
+        }
+    }
+
+    while (l < leftSize) {
+        numbers[i++] = left[l++];
+    }
+
+    while (r < rightSize) {
+        numbers[i++] = right[r++];
+    }
+}
+
+void mergeSort(int numbers[], int length) {
+    if (length <= 1) {
+        return;
+    }
+
+    int mid = length / 2;
+    int left[mid];
+    int right[length - mid];
+
+    for (int i = 0; i < mid; i++) {
+        left[i] = numbers[i];
+    }
+    for (int i = mid; i < length; i++) {
+        right[i - mid] = numbers[i];
+    }
+
+    mergeSort(left, mid);
+    mergeSort(right, length - mid);
+    Merge(left, mid, right, length - mid, numbers, length);
+}
+
+//-------------------------------------- QUICK-SORT ----------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+int partition(int numbers[], int low, int high) {
+    int pivot = numbers[high];
+    int i = low - 1;
+
+    for (int j = low; j < high; j++) {
+        if (numbers[j] < pivot) {
+            i++;
+            int temp = numbers[i];
+            numbers[i] = numbers[j];
+            numbers[j] = temp;
+        }
+    }
+    int temp = numbers[i + 1];
+    numbers[i + 1] = numbers[high];
+    numbers[high] = temp;
+    return (i + 1);
+}
+
+void quickSort(int numbers[], int low, int high) {
+    if (low < high) {
+        int pi = partition(numbers, low, high);
+
+        quickSort(numbers, low, pi - 1);
+        quickSort(numbers, pi + 1, high);
+    }
+}
+
 //--------------------------------------- HEAP-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
@@ -189,13 +260,16 @@ int main() {
     cout << "original array: [ ";
     print(numbers);
     cout <<"]"<<endl;
+    cout << endl;
     {
         Timer timer;
         //bubblesort(numbers);
         //selectionsort(numbers);
         //insertionsort(numbers);
         //heapSort(numbers);
-        //shellSort(numbers);      
+        //shellSort(numbers);
+        //mergeSort(numbers, range);
+        //quickSort(numbers, 0, range - 1);      
     }
     cout << "sorted array: [ ";
     print(numbers);
