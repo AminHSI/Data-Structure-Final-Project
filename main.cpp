@@ -252,6 +252,8 @@ void shellSort(int(&numbers)[]) {
 
 int main() {
 
+    
+
     cout << "welcome\nenter your preferred size for the dataset: ";
     int size;
     cin >> size;
@@ -261,24 +263,61 @@ int main() {
         numbers[i] = randomnum();
     }
 
-    cout << "here is your original array: [ ";
-    print(numbers);
-    cout <<"]"<<endl;
-    cout << endl;
     {
         Timer timer;
-        //bubblesort(numbers);
-        //selectionsort(numbers);
-        //insertionsort(numbers);
-        //heapSort(numbers);
-        //shellSort(numbers);
-        //mergeSort(numbers, range);
-        //quickSort(numbers, 0, range - 1);      
+        bubblesort(numbers);     
     }
-    cout << "sorted array: [ ";
-    print(numbers);
-    cout <<"]"<<endl;
-    cout << "the latency of this sorting function was: "<<latency<<" microseconds";
+    cout << "the latency of bubble sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        selectionsort(numbers); 
+    }
+    cout << "the latency of selection sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        insertionsort(numbers);
+    }
+    cout << "the latency of insertion sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        heapSort(numbers);
+    
+    }
+    cout << "the latency of heap sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        shellSort(numbers);
+    
+    }
+    cout << "the latency of shell sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        mergeSort(numbers, range);  
+    }
+    cout << "the latency of merge sorting function was: "<<latency<<" microseconds" << endl;
+    for(int i=0 ; i<range ; i++) {
+        numbers[i] = randomnum();
+    }
+    {
+        Timer timer;
+        quickSort(numbers, 0, range - 1);      
+    }
+    cout << "the latency of quick sorting function was: "<<latency<<" microseconds" << endl;
     return 0;
 }
 
