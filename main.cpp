@@ -112,13 +112,13 @@ void selectionsort(int(&numbers)[]) {
 void insertionsort(int(&numbers)[]) {
     for(int i=1 ; i<range ; i++) {
         int index = i;
-        while(numbers[i] < numbers[i-1]) {
-            int temp = numbers[i];
-            numbers[i] = numbers[i-1];
-            numbers[i-1] = temp;
-            if(i>0) i--;
+        while((index-1) >= 0 && numbers[index] < numbers[index-1]) {
+            int temp = numbers[index];
+            numbers[index] = numbers[index-1];
+            numbers[index-1] = temp;
+            index--;
         }
-        i = index;
+        
     }
 }
 
@@ -265,7 +265,7 @@ int main() {
         Timer timer;
         //bubblesort(numbers);
         //selectionsort(numbers);
-        //insertionsort(numbers);
+        insertionsort(numbers);
         //heapSort(numbers);
         //shellSort(numbers);
         //mergeSort(numbers, range);
