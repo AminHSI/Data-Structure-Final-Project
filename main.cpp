@@ -22,7 +22,7 @@ notes
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
 
 //this determines the length of our list of numbers
-const int range = 1000;
+int range;
 int latency = 0;
 
 //--------------------------- GENERATION-PRINTING-CALCULATION -----------------------------//
@@ -37,7 +37,7 @@ int randomnum() {
 }
 
 //this is a simple function to print our numbers in order
-void print(int(&numbers)[range]) {    
+void print(int(&numbers)[]) {    
     for(int i=0 ; i<range ; i++) {
         cout << numbers[i] << " ";
     }
@@ -112,13 +112,12 @@ void selectionsort(int(&numbers)[]) {
 void insertionsort(int(&numbers)[]) {
     for(int i=1 ; i<range ; i++) {
         int index = i;
-        while(numbers[i] < numbers[i-1]) {
-            int temp = numbers[i];
-            numbers[i] = numbers[i-1];
-            numbers[i-1] = temp;
-            if(i>0) i--;
+        while((index-1) >= 0 && numbers[index] < numbers[index-1]) {
+            int temp = numbers[index];
+            numbers[index] = numbers[index-1];
+            numbers[index-1] = temp;
+            index--;
         }
-        i = index;
     }
 }
 
@@ -181,18 +180,22 @@ void shellSort(int(&numbers)[]) {
 
 int main() {
 
+    cout << "welcome\nenter your preferred size for the dataset: ";
+    int size;
+    cin >> size;
+    range = size;
     int numbers[range];
     for(int i=0 ; i<range ; i++) {
         numbers[i] = randomnum();
     }
 
-    cout << "original array: [ ";
+    cout << "here is your original array: [ ";
     print(numbers);
     cout <<"]"<<endl;
     {
         Timer timer;
         //bubblesort(numbers);
-        //selectionsort(numbers);
+        selectionsort(numbers);
         //insertionsort(numbers);
         //heapSort(numbers);
         //shellSort(numbers);      
