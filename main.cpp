@@ -15,7 +15,6 @@ notes
 ○ Merge Sort        (functional)
 ○ Quick Sort        (functional) 
 ○ Heap Sort         (functional)  
-○ Radix Sort 
 ○ Shell Sort        (functional)
 */
 
@@ -32,52 +31,52 @@ int latency = 0;
 
 int randomnum() {
     random_device rand;
-    uniform_int_distribution<int> num(0,range);
+    uniform_int_distribution<int> num(0, range);
     return num(rand);
 }
 
 //this is a simple function to print our numbers in order
 void print(int(&numbers)[]) {    
-    for(int i=0 ; i<range ; i++) {
+    for (int i = 0; i < range; i++) {
         cout << numbers[i] << " ";
     }
 }
 
 //this class will calculate the latency of a certain code block
 class Timer {
-	public:
-		Timer() {
-			starttime = std::chrono::high_resolution_clock::now();
-		}
-		~Timer() {
-			stop();
-		}
-		void stop() {
-			auto stoptime = std::chrono::high_resolution_clock::now();
-			auto start = std::chrono::time_point_cast<std::chrono::microseconds>(starttime).time_since_epoch().count();
-			auto stop = std::chrono::time_point_cast<std::chrono::microseconds>(stoptime).time_since_epoch().count();
-			auto duration = stop - start;
-			//cout << "latency of the selected sorting function was: " << duration << " microseconds";
-            latency = duration;
-		}
-	private:
-		std::chrono::time_point<std::chrono::high_resolution_clock> starttime;
+public:
+    Timer() {
+        starttime = std::chrono::high_resolution_clock::now();
+    }
+    ~Timer() {
+        stop();
+    }
+    void stop() {
+        auto stoptime = std::chrono::high_resolution_clock::now();
+        auto start = std::chrono::time_point_cast<std::chrono::microseconds>(starttime).time_since_epoch().count();
+        auto stop = std::chrono::time_point_cast<std::chrono::microseconds>(stoptime).time_since_epoch().count();
+        auto duration = stop - start;
+        latency = duration;
+    }
+private:
+    std::chrono::time_point<std::chrono::high_resolution_clock> starttime;
 };
 
 //------------------------------------- BUBBLE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//first version of bubble sort function
+// Simple but inefficient sorting algorithm.
+// Repeatedly steps through the list, compares adjacent elements,
+// and swaps them if they are in the wrong order. Best for small datasets or educational purposes.
 
 void bubblesort(int(&numbers)[]) {
-
-    while(1) {
+    while (1) {
         int counter = 1;
-        for(int i=0 ; i<(range-1) ; i++) {
-            if(numbers[i]>numbers[i+1]) {
+        for (int i = 0; i < (range - 1); i++) {
+            if (numbers[i] > numbers[i + 1]) {
                 int temp = numbers[i];
-                numbers[i] = numbers[i+1];
-                numbers[i+1] = temp;
+                numbers[i] = numbers[i + 1];
+                numbers[i + 1] = temp;
                 counter = 0;
             }
         }
@@ -88,13 +87,14 @@ void bubblesort(int(&numbers)[]) {
 //------------------------------------ SELECTION-SORT -------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//first selection sort algorithm implementation
+// Repeatedly finds the minimum element from the unsorted part and puts it at the beginning.
+// Also not very efficient for large datasets.
 
 void selectionsort(int(&numbers)[]) {
-    for(int i=0 ; i<(range-1) ; i++) {
+    for (int i = 0; i < (range - 1); i++) {
         int min = i;
-        for(int j=i ; j<(range) ; j++) {
-            if(numbers[j]<numbers[min]) {
+        for (int j = i; j < (range); j++) {
+            if (numbers[j] < numbers[min]) {
                 min = j;
             }
         }
@@ -107,15 +107,16 @@ void selectionsort(int(&numbers)[]) {
 //------------------------------------ INSERTION-SORT -------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//insertion sort is functiolan
+// Builds the final sorted array one item at a time.
+// More efficient than bubble sort and selection sort for small datasets or nearly sorted data.
 
 void insertionsort(int(&numbers)[]) {
-    for(int i=1 ; i<range ; i++) {
+    for (int i = 1; i < range; i++) {
         int index = i;
-        while((index-1) >= 0 && numbers[index] < numbers[index-1]) {
+        while ((index - 1) >= 0 && numbers[index] < numbers[index - 1]) {
             int temp = numbers[index];
-            numbers[index] = numbers[index-1];
-            numbers[index-1] = temp;
+            numbers[index] = numbers[index - 1];
+            numbers[index - 1] = temp;
             index--;
         }
         i = index;
@@ -124,6 +125,9 @@ void insertionsort(int(&numbers)[]) {
 
 //-------------------------------------- MERGE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
+
+// A divide-and-conquer algorithm that divides the array into halves, sorts them, and then merges them back together.
+// Efficient and stable, with a guaranteed time complexity of O(n log n).
 
 void Merge(int left[], int leftSize, int right[], int rightSize, int numbers[], int totalSize) {
     int l = 0, r = 0, i = 0;
@@ -169,6 +173,9 @@ void mergeSort(int numbers[], int length) {
 //-------------------------------------- QUICK-SORT ----------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
+// Picks an element as a pivot and partitions the array around the pivot.
+// It has an average-case time complexity of O(n log n), but can degrade to O(n^2) if the pivot selection is poor.
+
 int partition(int numbers[], int low, int high) {
     int pivot = numbers[high];
     int i = low - 1;
@@ -199,16 +206,17 @@ void quickSort(int numbers[], int low, int high) {
 //--------------------------------------- HEAP-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//first version of heapsort
+// Builds a max heap and then extracts the maximum element one by one to build the sorted array.
+// Efficient with a time complexity of O(n log n), but not stable.
 
 void heap(int numbers[], int n, int i) {
     int root = i;
     int l = 2 * i + 1;
     int r = 2 * i + 2;
-    if (l < n && numbers[l] > numbers[root]){
+    if (l < n && numbers[l] > numbers[root]) {
         root = l;
     }
-    if (r < n && numbers[r] > numbers[root]){
+    if (r < n && numbers[r] > numbers[root]) {
         root = r;
     }
     if (root != i) {
@@ -217,7 +225,7 @@ void heap(int numbers[], int n, int i) {
     }
 }
 void heapSort(int(&numbers)[]) {
-    for (int i = range / 2 - 1 ; i >= 0; i--) {
+    for (int i = range / 2 - 1; i >= 0; i--) {
         heap(numbers, range, i);
     }
     for (int i = range - 1; i > 0; i--) {
@@ -229,19 +237,20 @@ void heapSort(int(&numbers)[]) {
 //-------------------------------------- SHELL-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//shell sort function done
+// An extension of insertion sort that allows the exchange of far-apart elements to move elements quickly to their final position.
+// It significantly improves the efficiency over insertion sort for larger datasets.
 
 void shellSort(int(&numbers)[]) {
-	for (int n = range/2; n > 0; n /= 2) {
-		for (int i = n; i < range; i += 1) {
-			int temp = numbers[i];
-			int j;		 
-			for (j = i; j >= n && numbers[j - n] > temp; j -= n) {
-				numbers[j] = numbers[j - n];
+    for (int n = range / 2; n > 0; n /= 2) {
+        for (int i = n; i < range; i += 1) {
+            int temp = numbers[i];
+            int j;		 
+            for (j = i; j >= n && numbers[j - n] > temp; j -= n) {
+                numbers[j] = numbers[j - n];
             }
-			numbers[j] = temp;
-		}
-	}
+            numbers[j] = temp;
+        }
+    }
 }
 
 //-----------------------------------------------------------------------------------------//
@@ -251,15 +260,12 @@ void shellSort(int(&numbers)[]) {
 //this is the main function where we create our list of numbers and call functions to sort it 
 
 int main() {
-
-    
-
     cout << "welcome\nenter your preferred size for the dataset: ";
     int size;
     cin >> size;
     range = size;
     int numbers[range];
-    for(int i=0 ; i<range ; i++) {
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
 
@@ -267,57 +273,54 @@ int main() {
         Timer timer;
         bubblesort(numbers);     
     }
-    cout << "the latency of bubble sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of bubble sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         selectionsort(numbers); 
     }
-    cout << "the latency of selection sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of selection sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         insertionsort(numbers);
     }
-    cout << "the latency of insertion sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of insertion sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         heapSort(numbers);
-    
     }
-    cout << "the latency of heap sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of heap sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         shellSort(numbers);
-    
     }
-    cout << "the latency of shell sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of shell sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         mergeSort(numbers, range);  
     }
-    cout << "the latency of merge sorting function was: "<<latency<<" microseconds" << endl;
-    for(int i=0 ; i<range ; i++) {
+    cout << "the latency of merge sorting function was: " << latency << " microseconds" << endl;
+    for (int i = 0; i < range; i++) {
         numbers[i] = randomnum();
     }
     {
         Timer timer;
         quickSort(numbers, 0, range - 1);      
     }
-    cout << "the latency of quick sorting function was: "<<latency<<" microseconds" << endl;
+    cout << "the latency of quick sorting function was: " << latency << " microseconds" << endl;
     return 0;
 }
-
