@@ -20,14 +20,14 @@ notes
 
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
 
-//this determines the length of our list of numbers
-int range;
+int range;//this variable determines the length of our list of numbers
+
 int latency = 0;
 
 //--------------------------- GENERATION-PRINTING-CALCULATION -----------------------------//
 //-----------------------------------------------------------------------------------------//
 
-//this function generates random numbers in the specified range
+//this function generates a random number in the specified range
 
 int randomnum() {
     random_device rand;
@@ -36,13 +36,15 @@ int randomnum() {
 }
 
 //this is a simple function to print our numbers in order
+
 void print(int(&numbers)[]) {    
     for (int i = 0; i < range; i++) {
-        cout << numbers[i] << " ";
+        cout << numbers[i] << "-";
     }
 }
 
 //this class will calculate the latency of a certain code block
+
 class Timer {
 public:
     Timer() {
@@ -262,20 +264,20 @@ void shellSort(int(&numbers)[]) {
 int main() {
     cout << "welcome\nenter your preferred size for the dataset: ";
     int size;
-    cin >> size;
-    range = size;
+    cin >> size; range = size;   
     int numbers[range];
+    int originalnumbers[range];
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        originalnumbers[i] = numbers[i] = randomnum();
     }
 
     {
         Timer timer;
         bubblesort(numbers);     
     }
-    cout << "the latency of bubble sorting function was: " << latency << " microseconds" << endl;
+    cout << "\nthe latency of bubble sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
@@ -283,7 +285,7 @@ int main() {
     }
     cout << "the latency of selection sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
@@ -291,7 +293,7 @@ int main() {
     }
     cout << "the latency of insertion sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
@@ -299,7 +301,7 @@ int main() {
     }
     cout << "the latency of heap sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
@@ -307,7 +309,7 @@ int main() {
     }
     cout << "the latency of shell sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
@@ -315,12 +317,21 @@ int main() {
     }
     cout << "the latency of merge sorting function was: " << latency << " microseconds" << endl;
     for (int i = 0; i < range; i++) {
-        numbers[i] = randomnum();
+        numbers[i] = originalnumbers[i];
     }
     {
         Timer timer;
         quickSort(numbers, 0, range - 1);      
     }
     cout << "the latency of quick sorting function was: " << latency << " microseconds" << endl;
+
+    cout << "\nwould you like to see the original and sorted arrays?(y/n) ";
+    char choice; cin >> choice;
+    if (choice=='y' or choice=='Y') {
+        cout << "\noriginal array: [-";
+        print(originalnumbers);
+        cout << "]\n\nsorted array: [-";
+        print(numbers); cout << "]";
+    }
     return 0;
 }
