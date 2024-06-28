@@ -13,6 +13,8 @@ This project implements and compares various sorting algorithms in C++. The algo
 
 Each sorting algorithm is measured for its latency, which is the time it takes to sort a randomly generated list of numbers.
 
+you can also find details and demonstrations for each sorting algorithm inside the code by referring to the notes above all sorting functions.
+
 ## Getting Started
 
 ### Prerequisites
@@ -54,4 +56,12 @@ the latency of quick sorting function was: 567 microseconds
 the latency of radix sorting function was: 217 microseconds
 ```
 
-You will also be given the option to print both the original and sorted datasets. Note that printing a large dataset can be a bit messy.
+You will also be given the option to print both the original and sorted datasets. Note that printing a very large dataset can be a bit messy.
+
+```yaml
+would you like to see the original and sorted arrays?(y/n) y
+
+)=> original array: [ 1148 254 8211 6785 9791 4349 829 6550 1923 2096 ]
+
+)=> sorted array: [ 254 829 1148 1923 2096 4349 6550 6785 8211 9791 ]
+```

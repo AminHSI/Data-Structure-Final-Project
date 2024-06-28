@@ -8,17 +8,11 @@
 #include <algorithm>
 using namespace std;
 
-/*
-notes
-○ Bubble Sort       (functional)
-○ Selection Sort    (functional)  
-○ Insertion Sort    (functional)
-○ Merge Sort        (functional)
-○ Quick Sort        (functional) 
-○ Heap Sort         (functional)  
-○ Shell Sort        (functional)
-○ Rasix Sort        (functional)
-*/
+
+//This code includes implementations of several fundamental sorting algorithms in C++. 
+//Each sorting algorithm is designed to arrange a collection of integers into ascending order, 
+//demonstrating different approaches to achieving this task efficiently.
+
 
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
 
@@ -71,9 +65,10 @@ private:
 //------------------------------------- BUBBLE-SORT ---------------------------------------//
 //-----------------------------------------------------------------------------------------//
 
-// Simple but inefficient sorting algorithm.
+// Simple but inefficient sorting algorithm. 
 // Repeatedly steps through the list, compares adjacent elements,
 // and swaps them if they are in the wrong order. Best for small datasets or educational purposes.
+//O(n^2) in the worst and average cases.
 
 void bubblesort(int(&numbers)[]) {
     while (1) {
@@ -95,6 +90,7 @@ void bubblesort(int(&numbers)[]) {
 
 // Repeatedly finds the minimum element from the unsorted part and puts it at the beginning.
 // Also not very efficient for large datasets.
+//O(n^2) in all cases.
 
 void selectionsort(int(&numbers)[]) {
     for (int i = 0; i < (range - 1); i++) {
@@ -115,6 +111,7 @@ void selectionsort(int(&numbers)[]) {
 
 // Builds the final sorted array one item at a time.
 // More efficient than bubble sort and selection sort for small datasets or nearly sorted data.
+//O(n^2) in the worst and average cases, but O(n) in the best case when the array is already sorted.
 
 void insertionsort(int(&numbers)[]) {
     for (int i = 1; i < range; i++) {
@@ -249,7 +246,7 @@ void heapSort(int(&numbers)[]) {
 
 // An extension of insertion sort that allows the exchange of far-apart elements to move elements quickly to their final position.
 // It significantly improves the efficiency over insertion sort for larger datasets.
-
+//O(n log n) in the best case, but its time complexity varies and can be influenced by the chosen gap sequence.
 void shellSort(int(&numbers)[]) {
     for (int n = range / 2; n > 0; n /= 2) {
         for (int i = n; i < range; i += 1) {
@@ -268,6 +265,7 @@ void shellSort(int(&numbers)[]) {
 
 //sorts numbers by processing individual digits sequentially, using a stable counting sort algorithm for each digit place.
 //By repeatedly sorting based on increasing digit significance it achieves efficient sorting without direct comparison between elements.
+//O(nk) where n is the number of elements and k is the number of digits in the largest number.
 
 void radixsort(int(&numbers)[]) {
     int max = 0;
@@ -383,11 +381,12 @@ int main() {
     cout << "\nwould you like to see the original and sorted arrays?(y/n) ";
     char choice; cin >> choice;
     if (choice=='y' or choice=='Y') {
-        cout << "\noriginal array: [ ";
+        cout << "\n)=> original array: [ ";
         print(originalnumbers);
-        cout << "]\n\nsorted array: [ ";
-        print(numbers); cout << "]";
+        cout << "]\n\n)=> sorted array: [ ";
+        print(numbers); cout << "]\n";
     }
+
     return 0;
 }
 
