@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <memory>
 #include <chrono>
+#include <algorithm>
 using namespace std;
 
 /*
@@ -16,13 +17,16 @@ notes
 ○ Quick Sort        (functional) 
 ○ Heap Sort         (functional)  
 ○ Shell Sort        (functional)
+○ Rasix Sort        (functional)
 */
 
 //------------------------------------- ARRAY-SIZE ----------------------------------------//
 
 int range;//this variable determines the length of our list of numbers
 
-int latency = 0;
+//---------------------------------- LATENCY-DURATION -------------------------------------//
+
+int latency = 0;//this variable determines the duration of a certain code block
 
 //--------------------------- GENERATION-PRINTING-CALCULATION -----------------------------//
 //-----------------------------------------------------------------------------------------//
@@ -31,7 +35,7 @@ int latency = 0;
 
 int randomnum() {
     random_device rand;
-    uniform_int_distribution<int> num(0, range);
+    uniform_int_distribution<int> num(0, 10000);
     return num(rand);
 }
 
@@ -39,7 +43,7 @@ int randomnum() {
 
 void print(int(&numbers)[]) {    
     for (int i = 0; i < range; i++) {
-        cout << numbers[i] << "-";
+        cout << numbers[i] << " ";
     }
 }
 
@@ -222,7 +226,9 @@ void heap(int numbers[], int n, int i) {
         root = r;
     }
     if (root != i) {
-        swap(numbers[i], numbers[root]);
+        int temp = numbers[i];
+        numbers[i] = numbers[root];
+        numbers[root] = temp;
         heap(numbers, n, root);
     }
 }
@@ -231,7 +237,9 @@ void heapSort(int(&numbers)[]) {
         heap(numbers, range, i);
     }
     for (int i = range - 1; i > 0; i--) {
-        swap(numbers[0], numbers[i]);
+        int temp = numbers[0];
+        numbers[0] = numbers[i];
+        numbers[i] = temp;
         heap(numbers, i, 0);
     }
 }
@@ -251,6 +259,38 @@ void shellSort(int(&numbers)[]) {
                 numbers[j] = numbers[j - n];
             }
             numbers[j] = temp;
+        }
+    }
+}
+
+//-------------------------------------- RADIX-SORT ---------------------------------------//
+//-----------------------------------------------------------------------------------------//
+
+//sorts numbers by processing individual digits sequentially, using a stable counting sort algorithm for each digit place.
+//By repeatedly sorting based on increasing digit significance it achieves efficient sorting without direct comparison between elements.
+
+void radixsort(int(&numbers)[]) {
+    int max = 0;
+    int sorted[range];
+    for (int i=0;i<range;i++) {
+        if (max < numbers[i]) {
+            max = numbers[i];
+        }
+    }
+    for (int digit=1;(max/digit)>0;digit*=10) {
+        int count[10] = { 0 };
+        for (int i=0;i<range;i++) {
+            count[(numbers[i]/digit) % 10]++;
+        }
+        for (int i=1;i<10;i++) {
+            count[i] += count[i-1];
+        }
+        for (int i=range-1;i>=0;i--) {
+            sorted[count[(numbers[i]/digit) % 10]-1] = numbers[i];
+            count[(numbers[i]/digit) % 10]--;
+        }
+        for (int i=0;i<range;i++) {
+            numbers[i] = sorted[i];
         }
     }
 }
@@ -276,6 +316,7 @@ int main() {
         bubblesort(numbers);     
     }
     cout << "\nthe latency of bubble sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -284,6 +325,7 @@ int main() {
         selectionsort(numbers); 
     }
     cout << "the latency of selection sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -292,6 +334,7 @@ int main() {
         insertionsort(numbers);
     }
     cout << "the latency of insertion sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -300,6 +343,7 @@ int main() {
         heapSort(numbers);
     }
     cout << "the latency of heap sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -308,6 +352,7 @@ int main() {
         shellSort(numbers);
     }
     cout << "the latency of shell sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -316,6 +361,7 @@ int main() {
         mergeSort(numbers, range);  
     }
     cout << "the latency of merge sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
     for (int i = 0; i < range; i++) {
         numbers[i] = originalnumbers[i];
     }
@@ -324,14 +370,24 @@ int main() {
         quickSort(numbers, 0, range - 1);      
     }
     cout << "the latency of quick sorting function was: " << latency << " microseconds" << endl;
+    //print(numbers); cout<<endl;
+    for (int i = 0; i < range; i++) {
+        numbers[i] = originalnumbers[i];
+    }
+    {
+        Timer timer;
+        radixsort(numbers);      
+    }
+    cout << "the latency of radix sorting function was: " << latency << " microseconds" << endl;
 
     cout << "\nwould you like to see the original and sorted arrays?(y/n) ";
     char choice; cin >> choice;
     if (choice=='y' or choice=='Y') {
-        cout << "\noriginal array: [-";
+        cout << "\noriginal array: [ ";
         print(originalnumbers);
-        cout << "]\n\nsorted array: [-";
+        cout << "]\n\nsorted array: [ ";
         print(numbers); cout << "]";
     }
     return 0;
 }
+
