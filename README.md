@@ -9,6 +9,7 @@ This project implements and compares various sorting algorithms in C++. The algo
 - Quick Sort
 - Heap Sort
 - Shell Sort
+- Radix Sort
 
 Each sorting algorithm is measured for its latency, which is the time it takes to sort a randomly generated list of numbers.
 
@@ -50,6 +51,7 @@ the latency of heap sorting function was: 3456 microseconds
 the latency of shell sorting function was: 2345 microseconds
 the latency of merge sorting function was: 1234 microseconds
 the latency of quick sorting function was: 567 microseconds
+the latency of radix sorting function was: 217 microseconds
 ```
 
-
+You will also be given the option to print both the original and sorted datasets. Note that printing a large dataset can be a bit messy.
