@@ -122,7 +122,6 @@ void insertionsort(int(&numbers)[]) {
             numbers[index - 1] = temp;
             index--;
         }
-        i = index;
     }
 }
 
