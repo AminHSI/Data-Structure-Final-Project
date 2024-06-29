@@ -247,12 +247,12 @@ void heapSort(int(&numbers)[]) {
 // It significantly improves the efficiency over insertion sort for larger datasets.
 //O(n log n) in the best case, but its time complexity varies and can be influenced by the chosen gap sequence.
 void shellSort(int(&numbers)[]) {
-    for (int n = range / 2; n > 0; n /= 2) {
-        for (int i = n; i < range; i += 1) {
+    for (int gap = range / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < range; i += 1) {
             int temp = numbers[i];
             int j;		 
-            for (j = i; j >= n && numbers[j - n] > temp; j -= n) {
-                numbers[j] = numbers[j - n];
+            for (j = i; j >= gap && numbers[j - gap] > temp; j -= gap) {
+                numbers[j] = numbers[j - gap];
             }
             numbers[j] = temp;
         }
